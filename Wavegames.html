@@ -1,0 +1,79 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Press Me Please</title>
+  <style>
+    .box {
+      width: 200px;
+      height: 200px;
+      background-image: url('button.png');
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      font-size: 24px;
+      font-weight: bold;
+      color: white;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    #response {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      display: none;
+      text-align: center;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+  <div class="box" onclick="showResponse()">
+    Press me please 🫦
+  </div>
+  <div id="response"></div>
+
+  <script>
+    const responses = [
+      "You're awesome!",
+      "Great job!",
+      "Keep it up!",
+      "You're a rockstar!",
+      "Fantastic!",
+      "Incredible!",
+      "Well done!",
+      "Superb!",
+      "Excellent!",
+      "Bravo!",
+      "Magnificent!",
+      "Splendid!",
+      "Brilliant!",
+      "Remarkable!",
+      "Stupendous!",
+      "Fabulous!",
+      "Marvelous!",
+      "Spectacular!",
+      "Sensational!",
+      "Extraordinary!"
+    ];
+
+    function showResponse() {
+      const responseDiv = document.getElementById("response");
+      responseDiv.style.display = "block";
+      const randomIndex = Math.floor(Math.random() * responses.length);
+      responseDiv.textContent = responses[randomIndex];
+      setTimeout(() => {
+        responseDiv.style.display = "none";
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
+```
