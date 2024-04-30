@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Button Clicker Game</title>
+</head>
+<body>
+  <h1>impossible game</h1>
+  <p>Click the button to increase the count by 1 it also increases the chance to reset by 1 percent.</p>
+  <p>Chance to reset: <span id="resetChance">0%</span></p>
+  <p>Count: <span id="count">0</span></p>
+  <p>Highest Score: <span id="highestScore">0</span></p>
+  <button onclick="clickButton()">Click me!</button>
+
+  <script>
+    let count = 0;
+    let highestScore = 0;
+    let resetChance = 0;
+
+    function clickButton() {
+      count++;
+      document.getElementById("count").textContent = count;
+
+      resetChance += 1;
+      document.getElementById("resetChance").textContent = `${resetChance}%`;
+
+      if (Math.random() * 100 < resetChance) {
+        alert(`Your count has been reset! Your highest score is ${highestScore}.`);
+        count = 0;
+        document.getElementById("count").textContent = count;
+        resetChance = 0;
+        document.getElementById("resetChance").textContent = `${resetChance}%`;
+      }
+
+      if (count > highestScore) {
+        highestScore = count;
+        document.getElementById("highestScore").textContent = highestScore;
+      }
+    }
+  </script>
+</body>
+</html>
+```
