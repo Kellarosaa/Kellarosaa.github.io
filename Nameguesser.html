@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Name Guessing</title>
+</head>
+<body>
+  <h1>What's your name?</h1>
+  <input type="text" id="nameInput" placeholder="Enter your name">
+  <button onclick="guessName()">Submit</button>
+  <p id="output"></p>
+
+  <script>
+    function guessName() {
+      const nameInput = document.getElementById('nameInput');
+      const name = nameInput.value.trim();
+      const output = document.getElementById('output');
+
+      output.textContent = 'Waiting...';
+
+      setTimeout(() => {
+        output.textContent = `I guess your name is ${name}`;
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
