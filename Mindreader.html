@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Number Guessing Game</title>
+  <style>
+    .loading-bar {
+      width: 0%;
+      height: 20px;
+      background-color: #4CAF50;
+      text-align: center;
+      line-height: 20px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Think of a Number</h1>
+  <p>Type the number you're thinking of:</p>
+  <input type="number" id="userNumber">
+  <button onclick="guessNumber()">Submit</button>
+  <div id="result"></div>
+  <div class="loading-bar" id="loadingBar"></div>
+
+  <script>
+    function guessNumber() {
+      const userNumber = document.getElementById("userNumber").value;
+      document.getElementById("result").innerHTML = "Calculating...";
+
+      const loadingBar = document.getElementById("loadingBar");
+      loadingBar.style.width = "0%";
+      loadingBar.textContent = "0%";
+
+      let width = 0;
+      const interval = setInterval(function() {
+        width += 33.33;
+        loadingBar.style.width = width + "%";
+        loadingBar.textContent = Math.round(width) + "%";
+
+        if (width >= 100) {
+          clearInterval(interval);
+          document.getElementById("result").innerHTML = `The number you were thinking of is ${userNumber}.`;
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
