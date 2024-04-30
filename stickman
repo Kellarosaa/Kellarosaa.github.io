@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Twerking Stick Figure</title>
+  <style>
+    #stick-figure {
+      width: 100px;
+      height: 200px;
+      position: relative;
+      margin: 50px auto;
+    }
+
+    .limb {
+      background-color: black;
+      position: absolute;
+    }
+
+    .head {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      top: 0;
+      left: 35px;
+    }
+
+    .torso {
+      width: 30px;
+      height: 80px;
+      top: 30px;
+      left: 35px;
+    }
+
+    .arm {
+      width: 60px;
+      height: 10px;
+      top: 50px;
+    }
+
+    .arm-left {
+      left: 0;
+    }
+
+    .arm-right {
+      right: 0;
+    }
+
+    .leg {
+      width: 30px;
+      height: 80px;
+      top: 110px;
+    }
+
+    .leg-left {
+      left: 0;
+    }
+
+    .leg-right {
+      right: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="stick-figure">
+    <div class="limb head"></div>
+    <div class="limb torso"></div>
+    <div class="limb arm arm-left"></div>
+    <div class="limb arm arm-right"></div>
+    <div class="limb leg leg-left"></div>
+    <div class="limb leg leg-right"></div>
+  </div>
+
+  <script>
+    const stickFigure = document.getElementById('stick-figure');
+    const limbs = document.querySelectorAll('.limb');
+
+    let twerking = false;
+    let bouncing = false;
+
+    function twerk() {
+      limbs.forEach(limb => {
+        limb.style.transform = `rotate(${Math.random() * 60 - 30}deg)`;
+      });
+    }
+
+    function bounce() {
+      stickFigure.style.transform = `translateY(${Math.random() * 50 - 25}px)`;
+    }
+
+    function animate() {
+      if (twerking) {
+        twerk();
+      }
+      if (bouncing) {
+        bounce();
+      }
+      requestAnimationFrame(animate);
+    }
+
+    stickFigure.addEventListener('click', () => {
+      twerking = !twerking;
+      bouncing = !bouncing;
+      animate();
+    });
+  </script>
+</body>
+</html>
