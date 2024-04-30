@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tic Tac Toe</title>
+  <style>
+    .cell {
+      width: 100px;
+      height: 100px;
+      border: 1px solid black;
+      font-size: 50px;
+      text-align: center;
+      line-height: 100px;
+      cursor: pointer;
+    }
+    .row {
+      display: flex;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-board"></div>
+  <button id="reset-button">Reset</button>
+
+  <script>
+    const gameBoard = document.getElementById('game-board');
+    let currentPlayer = 'X';
+    let gameOver = false;
+
+    function createBoard() {
+      for (let i = 0; i < 9; i++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.addEventListener('click', handleCellClick);
+        gameBoard.appendChild(cell);
+      }
+    }
+
+    function handleCellClick(event) {
+      if (gameOver) return;
+
+      const cell = event.target;
+      if (cell.textContent === '') {
+        cell.textContent = currentPlayer;
+        checkWin();
+        switchPlayer();
+      }
+    }
+
+    function checkWin() {
+      const cells = document.querySelectorAll('.cell');
+      const winningCombos = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+      ];
+
+      for (const combo of winningCombos) {
+        if (
+          cells[combo[0]].textContent === currentPlayer &&
+          cells[combo[1]].textContent === currentPlayer &&
+          cells[combo[2]].textContent === currentPlayer
+        ) {
+          alert(`Player ${currentPlayer} wins!`);
+          gameOver = true;
+          return;
+        }
+      }
+
+      if (Array.from(cells).every(cell => cell.textContent !== '')) {
+        alert("It's a tie!");
+        gameOver = true;
+      }
+    }
+
+    function switchPlayer() {
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    }
+
+    function resetGame() {
+      const cells = document.querySelectorAll('.cell');
+      cells.forEach(cell => {
+        cell.textContent = '';
+      });
+      currentPlayer = 'X';
+      gameOver = false;
+    }
+
+    createBoard();
+
+    const resetButton = document.getElementById('reset-button');
+    resetButton.addEventListener('click', resetGame);
+  </script>
+</body>
+</html>
