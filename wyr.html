@@ -1,0 +1,124 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Would You Rather Game</title>
+  <style>
+    .option {
+      padding: 10px;
+      margin: 10px;
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+    .option.selected {
+      background-color: #ccc;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Would You Rather</h1>
+  <div id="question-container"></div>
+  <script>
+    const questions = [
+      {
+        question: "Would you rather have the ability to fly or the ability to breathe underwater?",
+        options: ["Fly", "Breathe underwater"]
+      },
+      {
+        question: "Would you rather have unlimited free pizza for life or unlimited free books for life?",
+        options: ["Free pizza", "Free books"]
+      },
+      {
+        question: "Would you rather be able to talk to animals or be able to speak every human language?",
+        options: ["Talk to animals", "Speak every language"]
+      },
+      {
+        question: "Would you rather have a personal chef or a personal driver?",
+        options: ["Personal chef", "Personal driver"]
+      },
+      {
+        question: "Would you rather be able to pause time or be able to rewind time?",
+        options: ["Pause time", "Rewind time"]
+      },
+      {
+        question: "Would you rather have a pet elephant or a pet giraffe?",
+        options: ["Pet elephant", "Pet giraffe"]
+      },
+      {
+        question: "Would you rather be able to control the weather or be able to control the tides?",
+        options: ["Control weather", "Control tides"]
+      },
+      {
+        question: "Would you rather be a famous actor or a famous musician?",
+        options: ["Famous actor", "Famous musician"]
+      },
+      {
+        question: "Would you rather have a personal robot assistant or a personal hologram assistant?",
+        options: ["Robot assistant", "Hologram assistant"]
+      },
+      {
+        question: "Would you rather be able to teleport or be able to read minds?",
+        options: ["Teleport", "Read minds"]
+      }
+    ];
+
+    const questionContainer = document.getElementById("question-container");
+    let currentQuestionIndex = 0;
+    let optionCounts = new Map();
+
+    function displayQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      questionContainer.innerHTML = `
+        <h2>${currentQuestion.question}</h2>
+        <div class="option" data-option="0">${currentQuestion.options[0]}</div>
+        <div class="option" data-option="1">${currentQuestion.options[1]}</div>
+      `;
+
+      const options = document.querySelectorAll(".option");
+      options.forEach((option) => {
+        option.addEventListener("click", handleOptionClick);
+      });
+    }
+
+    function handleOptionClick(event) {
+      const selectedOption = event.target;
+      const optionIndex = parseInt(selectedOption.dataset.option);
+      const currentQuestion = questions[currentQuestionIndex];
+
+      selectedOption.classList.add("selected");
+      selectedOption.style.pointerEvents = "none";
+
+      if (!optionCounts.has(currentQuestionIndex)) {
+        optionCounts.set(currentQuestionIndex, new Array(2).fill(0));
+      }
+
+      optionCounts.get(currentQuestionIndex)[optionIndex]++;
+
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        displayQuestion();
+      } else {
+        showResults();
+      }
+    }
+
+    function showResults() {
+      questionContainer.innerHTML = "";
+      for (let i = 0; i < questions.length; i++) {
+        const currentQuestion = questions[i];
+        const counts = optionCounts.get(i);
+        questionContainer.innerHTML += `
+          <h2>${currentQuestion.question}</h2>
+          <div>Option 1 (${currentQuestion.options[0]}): ${counts[0]} votes</div>
+          <div>Option 2 (${currentQuestion.options[1]}): ${counts[1]} votes</div>
+          <br>
+        `;
+      }
+    }
+
+    displayQuestion();
+  </script>
+</body>
+</html>
+```
