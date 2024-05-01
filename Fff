@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Flappy Bird</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="game-canvas"></canvas>
+  <script>
+    // Set up the canvas
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 800;
+    canvas.height = 600;
+
+    // Game variables
+    let bird = {
+      x: 100,
+      y: 300,
+      radius: 20,
+      velocity: 0,
+      gravity: 0.5,
+      image: new Image()
+    };
+    bird.image.src = 'bird.png';
+    let pipes = [];
+    let score = 0;
+
+    // Game loop
+    function gameLoop() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Update the bird
+      bird.velocity += bird.gravity;
+      bird.y += bird.velocity;
+
+      // Draw the bird
+      ctx.drawImage(bird.image, bird.x - bird.radius, bird.y - bird.radius, bird.radius * 2, bird.radius * 2);
+
+      // Update and draw the pipes
+      for (let i = 0; i < pipes.length; i++) {
+        pipes[i].x -= 2;
+        ctx.fillStyle = 'green';
+        ctx.fillRect(pipes[i].x, 0, 50, pipes[i].top);
+        ctx.fillRect(pipes[i].x, pipes[i].bottom, 50, canvas.height - pipes[i].bottom);
+
+        // Check for collision
+        if (
+          bird.x + bird.radius > pipes[i].x &&
+          bird.x - bird.radius < pipes[i].x + 50 &&
+          (bird.y - bird.radius < pipes[i].top || bird.y + bird.radius > pipes[i].bottom)
+        ) {
+          alert(`Game Over! Your score is ${score}`);
+          return;
+        }
+
+        // Add a new pipe
+        if (pipes[i].x + 50 < 0) {
+          pipes.splice(i, 1);
+          score++;
+          i--;
+        }
+      }
+
+      // Add a new pipe every 2 seconds
+      if (pipes.length === 0 || pipes[pipes.length - 1].x < canvas.width - 200) {
+        pipes.push({
+          x: canvas.width,
+          top: Math.floor(Math.random() * (canvas.height / 2 - 100)) + 50,
+          bottom: Math.floor(Math.random() * (canvas.height / 2 - 100)) + canvas.height / 2 + 50
+        });
+      }
+
+      // Draw the score
+      ctx.font = '24px Arial';
+      ctx.fillStyle = 'black';
+      ctx.fillText(`Score: ${score}`, 10, 30);
+
+      // Request the next frame
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Start the game
+    gameLoop();
+
+    // Handle user input
+    document.addEventListener('click', () => {
+      bird.velocity = -10;
+    });
+  </script>
+</body>
+</html>
