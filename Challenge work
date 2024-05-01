@@ -1,0 +1,45 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Number Challenge Game</title>
+</head>
+<body>
+  <h1>Number Challenge Game</h1>
+  <p>Your current amount: <span id="amount">0</span></p>
+  <p>Proposed amount: <span id="proposed-amount"></span></p>
+  <button id="challenge-btn">Challenge</button>
+  <button id="decline-btn">Decline</button>
+
+  <script>
+    let amount = 0;
+    const amountDisplay = document.getElementById('amount');
+    const proposedAmountDisplay = document.getElementById('proposed-amount');
+    const challengeBtn = document.getElementById('challenge-btn');
+    const declineBtn = document.getElementById('decline-btn');
+
+    function proposeAmount() {
+      const proposedAmount = Math.floor(Math.random() * 5) + 1;
+      proposedAmountDisplay.textContent = proposedAmount;
+      return proposedAmount;
+    }
+
+    function challengeProposal() {
+      const proposedAmount = proposeAmount();
+      const winChance = amount >= proposedAmount ? 0.75 : 0.1;
+      if (Math.random() < winChance) {
+        amount += proposedAmount;
+        alert('You won the challenge!');
+      } else {
+        amount = Math.max(0, amount - proposedAmount);
+        alert('You lost the challenge.');
+      }
+      amountDisplay.textContent = amount;
+    }
+
+    challengeBtn.addEventListener('click', challengeProposal);
+    declineBtn.addEventListener('click', proposeAmount);
+  </script>
+</body>
+</html>
+```
