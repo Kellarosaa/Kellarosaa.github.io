@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>you cant beat this game</title>
+  <style>
+    button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Sigma Game</h1>
+  <p id="question"></p>
+  <button id="answer1">Answer 1</button>
+  <button id="answer2">Answer 2</button>
+  <p id="result"></p>
+
+  <script>
+    // Array of questions and answers
+    const questions = [
+      {
+        question: "What is the capital of France?",
+        answers: ["Paris", "London"],
+        correctAnswer: 0
+      },
+      {
+        question: "What is the largest planet in our solar system?",
+        answers: ["Jupiter", "Saturn"],
+        correctAnswer: 0
+      },
+      {
+        question: "What is the currency used in Japan?",
+        answers: ["Yen", "Euro"],
+        correctAnswer: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+
+    // Function to display the current question
+    function displayQuestion() {
+      document.getElementById("question").textContent = questions[currentQuestion].question;
+      document.getElementById("answer1").textContent = questions[currentQuestion].answers[0];
+      document.getElementById("answer2").textContent = questions[currentQuestion].answers[1];
+    }
+
+    // Function to handle user's answer
+    function checkAnswer(index) {
+      if (index === questions[currentQuestion].correctAnswer) {
+        document.getElementById("result").textContent = "Correct!";
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+          displayQuestion();
+        } else {
+          document.getElementById("result").textContent = "Game Over Press F5 to Restart.";
+          currentQuestion = 0;
+        }
+      } else {
+        document.getElementById("result").textContent = "Incorrect. Game Over!";
+        currentQuestion = 0;
+        displayQuestion();
+      }
+    }
+
+    // Add event listeners to the answer buttons
+    document.getElementById("answer1").addEventListener("click", () => checkAnswer(0));
+    document.getElementById("answer2").addEventListener("click", () => checkAnswer(1));
+
+    // Display the first question
+    displayQuestion();
+  </script>
+</body>
+</html>
