@@ -1,5 +1,77 @@
 <!DOCTYPE html>
 <html>
+<body>
+  <script>
+    function getDeviceType() {
+      const userAgent = navigator.userAgent;
+      if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(userAgent)) {
+        return "tablet";
+      }
+      if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(userAgent)) {
+        return "mobile";
+      }
+      return "desktop";
+    }
+
+    function getBrowserName() {
+      const userAgent = window.navigator.userAgent,
+            vendor = window.navigator.vendor,
+            operatingSystem = window.navigator.appVersion;
+
+      if (userAgent.indexOf("Edge") > -1) return "Microsoft Edge";
+      if (userAgent.indexOf("Chrome") > -1 && vendor.indexOf("Google") > -1) return "Google Chrome";
+      if (userAgent.indexOf("Safari") > -1 && vendor.indexOf("Apple") > -1) return "Apple Safari";
+      if (userAgent.indexOf("Opera") > -1 || userAgent.indexOf("OPR") > -1) return "Opera";
+      if (userAgent.indexOf("Firefox") > -1) return "Mozilla Firefox";
+      if ((userAgent.indexOf("MSIE") > -1) || (!!document.documentMode === true)) return "Microsoft Internet Explorer";
+      return "Unknown";
+    }
+
+    function getIOSVersion() {
+      if (/iP(hone|od|ad)/.test(navigator.platform)) {
+        const v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+        return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+      }
+      return null;
+    }
+
+    function getUserLocation() {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            resolve({ latitude, longitude });
+          },
+          (error) => {
+            if (error.code === error.PERMISSION_DENIED) {
+              window.location.href = "https://example.com";
+            }
+            reject(error);
+          }
+        );
+      });
+    }
+
+    async function displayResults() {
+      const deviceType = getDeviceType();
+      const browserName = getBrowserName();
+      const iOSVersion = getIOSVersion();
+      const userLocation = await getUserLocation();
+
+      alert(`Device Type: ${deviceType}`);
+      alert(`Browser: ${browserName}`);
+      if (iOSVersion) {
+        alert(`iOS Version: ${iOSVersion[0]}.${iOSVersion[1]}.${iOSVersion[2]}`);
+      }
+      alert(`Location: Latitude: ${userLocation.latitude}, Longitude: ${userLocation.longitude}`);
+    }
+
+    displayResults();
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html>
 <head>
   <title>Number Challenge Game</title>
 </head>
