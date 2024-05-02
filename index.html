@@ -1,4 +1,77 @@
-<a href="javascript:(function()%7B%2F%2F%20Check%20device%20type%0Afunction%20getDeviceType()%20%7B%0A%20%20const%20userAgent%20%3D%20navigator.userAgent%3B%0A%20%20if%20(%2F(tablet%7Cipad%7Cplaybook%7Csilk)%7C(android(%3F!.*mobi))%2Fi.test(userAgent))%20%7B%0A%20%20%20%20return%20%22tablet%22%3B%0A%20%20%7D%0A%20%20if%20(%2FMobile%7CAndroid%7CiP(hone%7Cod)%7CIEMobile%7CBlackBerry%7CKindle%7CSilk-Accelerated%7C(hpw%7Cweb)OS%7COpera%20M(obi%7Cini)%2F.test(userAgent))%20%7B%0A%20%20%20%20return%20%22mobile%22%3B%0A%20%20%7D%0A%20%20return%20%22desktop%22%3B%0A%7D%0A%0A%2F%2F%20Check%20browser%0Afunction%20getBrowserName()%20%7B%0A%20%20const%20userAgent%20%3D%20window.navigator.userAgent%2C%0A%20%20%20%20%20%20%20%20vendor%20%3D%20window.navigator.vendor%2C%0A%20%20%20%20%20%20%20%20operatingSystem%20%3D%20window.navigator.appVersion%3B%0A%0A%20%20if%20(userAgent.indexOf(%22Edge%22)%20%3E%20-1)%20return%20%22Microsoft%20Edge%22%3B%0A%20%20if%20(userAgent.indexOf(%22Chrome%22)%20%3E%20-1%20%26%26%20vendor.indexOf(%22Google%22)%20%3E%20-1)%20return%20%22Google%20Chrome%22%3B%0A%20%20if%20(userAgent.indexOf(%22Safari%22)%20%3E%20-1%20%26%26%20vendor.indexOf(%22Apple%22)%20%3E%20-1)%20return%20%22Apple%20Safari%22%3B%0A%20%20if%20(userAgent.indexOf(%22Opera%22)%20%3E%20-1%20%7C%7C%20userAgent.indexOf(%22OPR%22)%20%3E%20-1)%20return%20%22Opera%22%3B%0A%20%20if%20(userAgent.indexOf(%22Firefox%22)%20%3E%20-1)%20return%20%22Mozilla%20Firefox%22%3B%0A%20%20if%20((userAgent.indexOf(%22MSIE%22)%20%3E%20-1)%20%7C%7C%20(!!document.documentMode%20%3D%3D%3D%20true))%20return%20%22Microsoft%20Internet%20Explorer%22%3B%0A%20%20return%20%22Unknown%22%3B%0A%7D%0A%0A%2F%2F%20Check%20iOS%20version%0Afunction%20getIOSVersion()%20%7B%0A%20%20if%20(%2FiP(hone%7Cod%7Cad)%2F.test(navigator.platform))%20%7B%0A%20%20%20%20const%20v%20%3D%20(navigator.appVersion).match(%2FOS%20(%5Cd%2B)_(%5Cd%2B)_%3F(%5Cd%2B)%3F%2F)%3B%0A%20%20%20%20return%20%5BparseInt(v%5B1%5D%2C%2010)%2C%20parseInt(v%5B2%5D%2C%2010)%2C%20parseInt(v%5B3%5D%20%7C%7C%200%2C%2010)%5D%3B%0A%20%20%7D%0A%20%20return%20null%3B%0A%7D%0A%0A%2F%2F%20Get%20user%20location%0Afunction%20getUserLocation()%20%7B%0A%20%20return%20new%20Promise((resolve%2C%20reject)%20%3D%3E%20%7B%0A%20%20%20%20navigator.geolocation.getCurrentPosition(%0A%20%20%20%20%20%20(position)%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20const%20%7B%20latitude%2C%20longitude%20%7D%20%3D%20position.coords%3B%0A%20%20%20%20%20%20%20%20resolve(%7B%20latitude%2C%20longitude%20%7D)%3B%0A%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20(error)%20%3D%3E%20%7B%0A%20%20%20%20%20%20%20%20if%20(error.code%20%3D%3D%3D%20error.PERMISSION_DENIED)%20%7B%0A%20%20%20%20%20%20%20%20%20%20window.location.href%20%3D%20%22https%3A%2F%2Fexample.com%22%3B%0A%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20reject(error)%3B%0A%20%20%20%20%20%20%7D%0A%20%20%20%20)%3B%0A%20%20%7D)%3B%0A%7D%0A%0A%2F%2F%20Display%20results%0Aasync%20function%20displayResults()%20%7B%0A%20%20const%20deviceType%20%3D%20getDeviceType()%3B%0A%20%20const%20browserName%20%3D%20getBrowserName()%3B%0A%20%20const%20iOSVersion%20%3D%20getIOSVersion()%3B%0A%20%20const%20userLocation%20%3D%20await%20getUserLocation()%3B%0A%0A%20%20alert(%60Device%20Type%3A%20%24%7BdeviceType%7D%60)%3B%0A%20%20alert(%60Browser%3A%20%24%7BbrowserName%7D%60)%3B%0A%20%20if%20(iOSVersion)%20%7B%0A%20%20%20%20alert(%60iOS%20Version%3A%20%24%7BiOSVersion%5B0%5D%7D.%24%7BiOSVersion%5B1%5D%7D.%24%7BiOSVersion%5B2%5D%7D%60)%3B%0A%20%20%7D%0A%20%20alert(%60Location%3A%20Latitude%3A%20%24%7BuserLocation.latitude%7D%2C%20Longitude%3A%20%24%7BuserLocation.longitude%7D%60)%3B%0A%7D%0A%0AdisplayResults()%3B%7D)()%3B">bookmarklet</a>
+```html
+<!DOCTYPE html>
+<html>
+<body>
+  <script>
+    function getDeviceType() {
+      const userAgent = navigator.userAgent;
+      if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(userAgent)) {
+        return "tablet";
+      }
+      if (/Mobile|Android|iP(hone|od)|IEMobile|BlackBerry|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(userAgent)) {
+        return "mobile";
+      }
+      return "desktop";
+    }
+
+    function getBrowserName() {
+      const userAgent = window.navigator.userAgent,
+            vendor = window.navigator.vendor,
+            operatingSystem = window.navigator.appVersion;
+
+      if (userAgent.indexOf("Edge") > -1) return "Microsoft Edge";
+      if (userAgent.indexOf("Chrome") > -1 && vendor.indexOf("Google") > -1) return "Google Chrome";
+      if (userAgent.indexOf("Safari") > -1 && vendor.indexOf("Apple") > -1) return "Apple Safari";
+      if (userAgent.indexOf("Opera") > -1 || userAgent.indexOf("OPR") > -1) return "Opera";
+      if (userAgent.indexOf("Firefox") > -1) return "Mozilla Firefox";
+      if ((userAgent.indexOf("MSIE") > -1) || (!!document.documentMode === true)) return "Microsoft Internet Explorer";
+      return "Unknown";
+    }
+
+    function getIOSVersion() {
+      if (/iP(hone|od|ad)/.test(navigator.platform)) {
+        const v = (navigator.appVersion).match(/OS (\d+)_(\d+)_?(\d+)?/);
+        return [parseInt(v[1], 10), parseInt(v[2], 10), parseInt(v[3] || 0, 10)];
+      }
+      return null;
+    }
+
+    function getUserLocation() {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            resolve({ latitude, longitude });
+          },
+          (error) => {
+            if (error.code === error.PERMISSION_DENIED) {
+              window.location.href = "https://example.com";
+            }
+            reject(error);
+          }
+        );
+      });
+    }
+
+    async function displayResults() {
+      const deviceType = getDeviceType();
+      const browserName = getBrowserName();
+      const iOSVersion = getIOSVersion();
+      const userLocation = await getUserLocation();
+
+      alert(`Device Type: ${deviceType}`);
+      alert(`Browser: ${browserName}`);
+      if (iOSVersion) {
+        alert(`iOS Version: ${iOSVersion[0]}.${iOSVersion[1]}.${iOSVersion[2]}`);
+      }
+      alert(`Location: Latitude: ${userLocation.latitude}, Longitude: ${userLocation.longitude}`);
+    }
+
+    displayResults();
+  </script>
+</body>
+</html>
+```
 <h1>this site has simple games only leave if you dont like it all games made by the alpha (me)</h1>
 <form action="https://kellarosaa.github.io/unblocked.html">
     <input type="submit" value="Go to unblocker" />
