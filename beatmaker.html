@@ -1,1 +1,67 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Instrument Sounds</title>
+  <style>
+    .box {
+      width: 100px;
+      height: 100px;
+      background-color: #ccc;
+      display: inline-block;
+      margin: 10px;
+      text-align: center;
+      line-height: 100px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="box" id="bass">Bass</div>
+  <div class="box" id="drum">Drum</div>
 
+  <script>
+    const bassAudio = new Audio('bass.mp3');
+    const drumAudio = new Audio('drum.mp3');
+
+    let isPlaying = {
+      bass: false,
+      drum: false
+    };
+
+    document.querySelectorAll('.box').forEach(box => {
+      box.addEventListener('click', () => {
+        const id = box.id;
+        if (isPlaying[id]) {
+          stopAudio(id);
+        } else {
+          playAudio(id);
+        }
+      });
+    });
+
+    function playAudio(id) {
+      if (id === 'bass') {
+        bassAudio.loop = true;
+        bassAudio.play();
+      } else if (id === 'drum') {
+        drumAudio.loop = true;
+        drumAudio.play();
+      }
+      isPlaying[id] = true;
+    }
+
+    function stopAudio(id) {
+      if (id === 'bass') {
+        bassAudio.pause();
+        bassAudio.currentTime = 0;
+      } else if (id === 'drum') {
+        drumAudio.pause();
+        drumAudio.currentTime = 0;
+      }
+      isPlaying[id] = false;
+    }
+  </script>
+</body>
+</html>
+```
