@@ -1,85 +1,142 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>you cant beat this game</title>
-  <style>
-    button {
-      background-color: #4CAF50;
-      border: none;
-      color: white;
-      padding: 10px 20px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
-      font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
+  <title>Quiz</title>
 </head>
 <body>
-  <h1>quiz</h1>
+  <h1>Quiz</h1>
+  <div id="question"></div>
+  <input type="text" id="answer">
+  <button onclick="checkAnswer()">Submit</button>
+
   <script>
-    // Array of questions and answers
     const questions = [
       {
         question: "What is the capital of France?",
-        answers: ["Paris", "London"],
-        correctAnswer: 1
+        answer: "Paris"
+      },
+      {
+        question: "What is the largest ocean in the world?",
+        answer: "Pacific Ocean"
+      },
+      {
+        question: "What is the smallest planet in our solar system?",
+        answer: "Mercury"
+      },
+      {
+        question: "What is the largest mammal in the world?",
+        answer: "Blue Whale"
+      },
+      {
+        question: "What is the currency of Japan?",
+        answer: "Yen"
+      },
+      {
+        question: "What is the tallest mountain in the world?",
+        answer: "Mount Everest"
+      },
+      {
+        question: "What is the largest continent in the world?",
+        answer: "Asia"
+      },
+      {
+        question: "What is the largest river in the world?",
+        answer: "Nile River"
+      },
+      {
+        question: "What is the largest bone in the human body?",
+        answer: "Femur"
+      },
+      {
+        question: "What is the smallest country in the world by land area?",
+        answer: "Vatican City"
+      },
+      {
+        question: "What is the largest organ in the human body?",
+        answer: "Skin"
+      },
+      {
+        question: "What is the largest desert in the world?",
+        answer: "Sahara Desert"
       },
       {
         question: "What is the largest planet in our solar system?",
-        answers: ["Jupiter", "Saturn"],
-        correctAnswer: 0
-      },
-        question: "What is the largest planet in our solar system?",
-        answers: ["Jupiter", "Saturn"],
-        correctAnswer: 1
+        answer: "Jupiter"
       },
       {
-        question: "What is the currency used in Japan?",
-        answers: ["Yen", "Euro"],
-        correctAnswer: 0
+        question: "What is the fastest land animal?",
+        answer: "Cheetah"
+      },
+      {
+        question: "What is the largest moon of Saturn?",
+        answer: "Titan"
+      },
+      {
+        question: "What is the largest ocean on Earth?",
+        answer: "Pacific Ocean"
+      },
+      {
+        question: "What is the largest mammal in the ocean?",
+        answer: "Blue Whale"
+      },
+      {
+        question: "What is the largest river in South America?",
+        answer: "Amazon River"
+      },
+      {
+        question: "What is the largest country in the world by land area?",
+        answer: "Russia"
+      },
+      {
+        question: "What is the largest bone in the human hand?",
+        answer: "Metacarpal"
+      },
+      {
+        question: "What is the largest island in the world?",
+        answer: "Greenland"
+      },
+      {
+        question: "What is the largest mammal in the world?",
+        answer: "Blue Whale"
+      },
+      {
+        question: "What is the largest ocean in the world?",
+        answer: "Pacific Ocean"
+      },
+      {
+        question: "What is the largest planet in our solar system?",
+        answer: "Jupiter"
       }
     ];
 
     let currentQuestion = 0;
 
-    // Function to display the current question
     function displayQuestion() {
       document.getElementById("question").textContent = questions[currentQuestion].question;
-      document.getElementById("answer1").textContent = questions[currentQuestion].answers[0];
-      document.getElementById("answer2").textContent = questions[currentQuestion].answers[1];
     }
 
-    // Function to handle user's answer
-    function checkAnswer(index) {
-      if (index === questions[currentQuestion].correctAnswer) {
-        document.getElementById("result").textContent = "Correct!";
+    function checkAnswer() {
+      const userAnswer = document.getElementById("answer").value.toLowerCase();
+      const correctAnswer = questions[currentQuestion].answer.toLowerCase();
+
+      if (userAnswer === correctAnswer) {
+        alert("Correct!");
         currentQuestion++;
         if (currentQuestion < questions.length) {
           displayQuestion();
+          document.getElementById("answer").value = "";
         } else {
-          document.getElementById("result").textContent = "Game Over Press F5 to Restart.";
+          alert("You've completed the quiz!");
           currentQuestion = 0;
         }
       } else {
-        document.getElementById("result").textContent = "Incorrect. Game Over!";
+        alert("Game over! The quiz will restart.");
         currentQuestion = 0;
         displayQuestion();
+        document.getElementById("answer").value = "";
       }
     }
 
-    // Add event listeners to the answer buttons
-    document.getElementById("answer1").addEventListener("click", () => checkAnswer(0));
-    document.getElementById("answer2").addEventListener("click", () => checkAnswer(1));
-
-    // Display the first question
     displayQuestion();
   </script>
 </body>
