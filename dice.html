@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dice Rolling Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f0f0f0;
+    }
+    
+    h1 {
+      margin-top: 50px;
+    }
+    
+    button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin: 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    #result {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Dice Rolling Game</h1>
+  
+  <button onclick="rollD4()">Roll D4</button>
+  <button onclick="rollD6()">Roll D6</button>
+  <button onclick="rollD8()">Roll D8</button>
+  <button onclick="rollD10()">Roll D10</button>
+  <button onclick="rollD12()">Roll D12</button>
+  <button onclick="rollD20()">Roll D20</button>
+  
+  <div id="result"></div>
+  
+  <script>
+    function rollD4() {
+      var result = Math.floor(Math.random() * 4) + 1;
+      document.getElementById("result").textContent = "You rolled a " + result + " on a D4.";
+    }
+    
+    function rollD6() {
+      var result = Math.floor(Math.random() * 6) + 1;
+      document.getElementById("result").textContent = "You rolled a " + result + " on a D6.";
+    }
+    
+    function rollD8() {
+      var result = Math.floor(Math.random() * 8) + 1;
+      document.getElementById("result").textContent = "You rolled a " + result + " on a D8.";
+    }
+    
+    function rollD10() {
+      var result = Math.floor(Math.random() * 10) + 1;
+      document.getElementById("result").textContent = "You rolled a " + result + " on a D10.";
+    }
+    
+    function rollD12() {
+      var result = Math.floor(Math.random() * 12) + 1;
+      document.getElementById("result").textContent = "You rolled a " + result + " on a D12.";
+    }
+    
+    function rollD20() {
+      var result = Math.floor(Math.random() * 20) + 1;
+      document.getElementById("result").textContent = "You rolled a " + result + " on a D20.";
+    }
+  </script>
+</body>
+</html>
