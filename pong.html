@@ -1,0 +1,173 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pong Game</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: black;
+    }
+
+    #game-canvas {
+      border: 1px solid white;
+    }
+
+    #score-display {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      color: white;
+      font-size: 24px;
+      font-family: Arial, sans-serif;
+    }
+
+    #high-score-display {
+      position: absolute;
+      top: 40px;
+      left: 10px;
+      color: white;
+      font-size: 18px;
+      font-family: Arial, sans-serif;
+    }
+
+    #paddle {
+      position: absolute;
+      width: 100px;
+      height: 20px;
+      background-color: white;
+      border-radius: 10px;
+      cursor: move;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="game-canvas"></canvas>
+  <div id="score-display">Score: 0</div>
+  <div id="high-score-display">High Score: 0</div>
+  <div id="paddle"></div>
+
+  <script>
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+    const paddle = document.getElementById('paddle');
+    const scoreDisplay = document.getElementById('score-display');
+    const highScoreDisplay = document.getElementById('high-score-display');
+
+    let score = 0;
+    let highScore = 0;
+    let ballX = canvas.width / 2;
+    let ballY = canvas.height / 2;
+    let ballRadius = 10;
+    let ballSpeedX = 5;
+    let ballSpeedY = 5;
+    let paddleWidth = 100;
+    let paddleHeight = 20;
+    let paddleX = canvas.width / 2 - paddleWidth / 2;
+    let paddleY = canvas.height - paddleHeight - 10;
+    let isDragging = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    function drawBall() {
+      ctx.beginPath();
+      ctx.arc(ballX, ballY, ballRadius, 0, 2 * Math.PI);
+      ctx.fillStyle = 'white';
+      ctx.fill();
+      ctx.closePath();
+    }
+
+    function drawPaddle() {
+      paddle.style.left = paddleX + 'px';
+      paddle.style.top = paddleY + 'px';
+    }
+
+    function updateBall() {
+      ballX += ballSpeedX;
+      ballY += ballSpeedY;
+
+      if (ballY - ballRadius < 0 || ballY + ballRadius > canvas.height) {
+        ballSpeedY *= -1;
+      }
+
+      if (ballX - ballRadius < 0 || ballX + ballRadius > canvas.width) {
+        ballSpeedX *= -1;
+      }
+
+      if (
+        ballX - ballRadius < paddleX + paddleWidth &&
+        ballX + ballRadius > paddleX &&
+        ballY + ballRadius > paddleY &&
+        ballY - ballRadius < paddleY + paddleHeight
+      ) {
+        ballSpeedY *= -1;
+        score++;
+        scoreDisplay.textContent = `Score: ${score}`;
+      }
+
+      if (ballY + ballRadius > canvas.height) {
+        if (score > highScore) {
+          highScore = score;
+          highScoreDisplay.textContent = `High Score: ${highScore}`;
+        }
+        score = 0;
+        scoreDisplay.textContent = `Score: ${score}`;
+        ballX = canvas.width / 2;
+        ballY = canvas.height / 2;
+      }
+    }
+
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawBall();
+      drawPaddle();
+      updateBall();
+      requestAnimationFrame(gameLoop);
+    }
+
+    gameLoop();
+
+    paddle.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      lastMouseX = e.clientX - paddleX;
+      lastMouseY = e.clientY - paddleY;
+    });
+
+    paddle.addEventListener('mousemove', (e) => {
+      if (isDragging) {
+        paddleX = e.clientX - lastMouseX;
+        paddleY = e.clientY - lastMouseY;
+        drawPaddle();
+      }
+    });
+
+    paddle.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
+    paddle.addEventListener('touchstart', (e) => {
+      isDragging = true;
+      lastMouseX = e.touches[0].clientX - paddleX;
+      lastMouseY = e.touches[0].clientY - paddleY;
+    });
+
+    paddle.addEventListener('touchmove', (e) => {
+      if (isDragging) {
+        paddleX = e.touches[0].clientX - lastMouseX;
+        paddleY = e.touches[0].clientY - lastMouseY;
+        drawPaddle();
+      }
+    });
+
+    paddle.addEventListener('touchend', () => {
+      isDragging = false;
+    });
+  </script>
+</body>
+</html>
+```
