@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game of Life</title>
+  <style>
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(50, 1fr);
+      grid-template-rows: repeat(50, 1fr);
+      width: 500px;
+      height: 500px;
+      border: 1px solid black;
+    }
+
+    .cell {
+      width: 10px;
+      height: 10px;
+      background-color: white;
+      border: 1px solid lightgray;
+      cursor: pointer;
+    }
+
+    .alive {
+      background-color: black;
+    }
+  </style>
+</head>
+<body>
+  <div id="grid"></div>
+  <button id="run">Run</button>
+
+  <script>
+    const grid = document.getElementById('grid');
+    const runButton = document.getElementById('run');
+
+    // Create the grid
+    for (let i = 0; i < 50 * 50; i++) {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      grid.appendChild(cell);
+    }
+
+    const cells = document.querySelectorAll('.cell');
+
+    // Toggle cell state on click
+    cells.forEach(cell => {
+      cell.addEventListener('click', () => {
+        cell.classList.toggle('alive');
+      });
+    });
+
+    // Game of Life logic
+    function getNeighbors(index) {
+      const neighbors = [];
+      const row = Math.floor(index / 50);
+      const col = index % 50;
+
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          if (i === 0 && j === 0) continue;
+          const neighborRow = row + i;
+          const neighborCol = col + j;
+          if (neighborRow >= 0 && neighborRow < 50 && neighborCol >= 0 && neighborCol < 50) {
+            const neighborIndex = neighborRow * 50 + neighborCol;
+            neighbors.push(neighborIndex);
+          }
+        }
+      }
+
+      return neighbors;
+    }
+
+    function getNextState(index) {
+      const cell = cells[index];
+      const isAlive = cell.classList.contains('alive');
+      const neighbors = getNeighbors(index);
+      const aliveNeighbors = neighbors.filter(neighbor => cells[neighbor].classList.contains('alive')).length;
+
+      if (isAlive) {
+        return aliveNeighbors === 2 || aliveNeighbors === 3;
+      } else {
+        return aliveNeighbors === 3;
+      }
+    }
+
+    function updateGrid() {
+      const newStates = [];
+      cells.forEach((cell, index) => {
+        newStates.push(getNextState(index));
+      });
+      newStates.forEach((state, index) => {
+        if (state) {
+          cells[index].classList.add('alive');
+        } else {
+          cells[index].classList.remove('alive');
+        }
+      });
+    }
+
+    let intervalId;
+
+    runButton.addEventListener('click', () => {
+      if (intervalId) {
+        clearInterval(intervalId);
+        intervalId = null;
+      } else {
+        intervalId = setInterval(updateGrid, 100);
+      }
+    });
+  </script>
+</body>
+</html>
