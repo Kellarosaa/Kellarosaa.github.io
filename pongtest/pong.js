@@ -1,65 +1,75 @@
 const canvas = document.getElementById('pongCanvas');
-const ctx = canvas.getContext('2d');
+const context = canvas.getContext('2d');
 
-const paddleWidth = 75;
-const paddleHeight = 15;
-const paddleSpeed = 5;
+const ball = {
+  x: canvas.width / 2,
+  y: canvas.height / 2,
+  radius: 10,
+  speed: 2,
+  dx: 2,
+  dy: 2
+};
 
-const ballRadius = 10;
-const ballSpeed = 3;
+const paddle = {
+  width: 75,
+  height: 10,
+  x: canvas.width / 2 - 37.5,
+  y: canvas.height - 20,
+  speed: 4
+};
 
-let paddleX = (canvas.width - paddleWidth) / 2;
-let paddleY = canvas.height - paddleHeight - 20;
-
-let ballX = canvas.width / 2;
-let ballY = canvas.height / 2;
-let ballDX = ballSpeed;
-let ballDY = ballSpeed;
-
-function drawPaddle() {
-  ctx.fillStyle = '#fff';
-  ctx.fillRect(paddleX, paddleY, paddleWidth, paddleHeight);
-}
-
-function drawBall() {
-  ctx.beginPath();
-  ctx.arc(ballX, ballY, ballRadius, 0, Math.PI * 2, false);
-  ctx.fillStyle = '#fff';
-  ctx.fill();
-}
+let currentScore = 0;
+let highScore = 0;
 
 function update() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ball.x += ball.dx;
+  ball.y += ball.dy;
 
-  drawPaddle();
-  drawBall();
-
-  ballX += ballDX;
-  ballY += ballDY;
-
-  if (ballX + ballRadius > canvas.width || ballX - ballRadius < 0) {
-    ballDX = -ballDX;
+  if (ball.y + ball.radius > canvas.height) {
+    if (ball.x > paddle.x && ball.x < paddle.x + paddle.width) {
+      ball.dy *= -1;
+      currentScore++;
+      if (currentScore > highScore) {
+        highScore = currentScore;
+      }
+    } else {
+      // reset the game
+      ball.x = canvas.width / 2;
+      ball.y = canvas.height / 2;
+      currentScore = 0;
+    }
   }
 
-  if (ballY + ballRadius > canvas.height || ballY - ballRadius < 0) {
-    ballDY = -ballDY;
+  if (ball.y - ball.radius < 0) {
+    ball.dy *= -1;
   }
 
-  if (ballX > paddleX && ballX < paddleX + paddleWidth && ballY + ballRadius > paddleY) {
-    ballDY = -ballDY;
+  if (ball.x + ball.radius > canvas.width) {
+    ball.dx *= -1;
   }
 
-  requestAnimationFrame(update);
+  if (ball.x - ball.radius < 0) {
+    ball.dx *= -1;
+  }
+
+  if (ball.x > paddle.x && ball.x < paddle.x + paddle.width && ball.y + ball.radius > paddle.y) {
+    ball.dy *= -1;
+  }
+
+  paddle.x += (ball.x - paddle.x - paddle.width / 2) * 0.1;
 }
 
-canvas.addEventListener('touchstart', (e) => {
-  const touch = e.touches[0];
-  paddleX = touch.pageX - paddleWidth / 2;
-});
+function draw() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
 
-canvas.addEventListener('touchmove', (e) => {
-  const touch = e.touches[0];
-  paddleX = Math.max(0, Math.min(touch.pageX - paddleWidth / 2, canvas.width - paddleWidth));
-});
+  context.beginPath();
+  context.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
+  context.fillStyle = 'white';
+  context.fill();
+  context.closePath();
 
-update();
+  context.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
+
+  context.fillStyle = 'white';
+  context.font = '2rem Arial';
+  context.fillText(currentScore, canvas.width
