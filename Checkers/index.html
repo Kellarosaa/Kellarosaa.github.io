@@ -3,17 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkers Game</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Simple Checkers</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #board {
+            display: flex;
+            flex-wrap: wrap;
+            width: 400px;
+            height: 400px;
+            background-color: #ccc;
+        }
+        .cell {
+            width: 50px;
+            height: 50px;
+        }
+        .light {
+            background-color: #fff;
+        }
+        .dark {
+            background-color: #444;
+        }
+        .piece {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .black-piece {
+            background-color: #000;
+            top: 5px;
+            left: 5px;
+        }
+        .white-piece {
+            background-color: #fff;
+            top: 5px;
+            left: 5px;
+            box-shadow: 0 0 2px 2px #000;
+        }
+    </style>
 </head>
 <body>
-    <div id="game">
-        <!-- The board will be generated here -->
-    </div>
-    <div id="scores">
-        <div id="black-player-count-pieces"></div>
-        <div id="white-player-count-pieces"></div>
-    </div>
-    <script src="checkers.js"></script>
-</body>
-</html>
+    <div id="board"></div>
+    <script>
+        const board = document.getElementById('board');
+        const size = 8;
+        let selectedPiece = null;
+
+        function createBoard() {
+            for (let i = 0; i < size * size; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                if ((i + Math.floor(i / size)) % 2 === 0) {
+                    cell.classList.add('light');
+                } else {
+                    cell.classList.add('dark');
+                }
+                board.appendChild(cell);
+            }
+        }
+
+        function createPieces() {
+            for (let i = 0; i < size; i++) {
+                const blackPiece = document.createElement('div');
+                blackPiece.className = 'piece black-piece';
+                const whitePiece = document.createElement('div');
+                whitePiece.className = 'piece white-piece';
+                if (i % 2 === 0) {
+                    board.children[i].appendChild(blackPiece);
+                    board.children[size * size - i - 1].appendChild(whitePiece);
+                } else {
+                    board.children[size - i - 1].appendChild(blackPiece);
+                    board.children[size * size - size + i].appendChild(whitePiece);
+                }
+            }
+        }
+
+        function addEventListeners() {
+            for (const cell of board.children) {
+                cell.addEventListener('click', (e) => {
+                    const piece = e.target.querySelector('.piece');
+                    if (piece && !selectedPiece) {
+                        piece.classList.add('highlight');
+                        selectedPiece = piece;
+                    } else if (piece && selectedPiece && piece !== selectedPiece) {
+                        deselectPiece();
+                        selectPiece(piece);
+                    }
+                });
+            }
+        }
+
+        function selectPiece(piece) {
+            piece.classList.add('selected');
+            const row = Array.from(board.children).indexOf(piece.parentElement);
+            const col = Array.from(piece.parentElement.children).indexOf(
