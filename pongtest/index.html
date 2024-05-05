@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Single-Player Pong</title>
+    <title>Pong</title>
     <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-    <canvas id="pongCanvas" width="480" height="320"></canvas>
+    <canvas id="pongCanvas"></canvas>
+    <div id="score">
+      <p>Score: <span id="currentScore">0</span></p>
+      <p>High Score: <span id="highScore">0</span></p>
+    </div>
     <script src="pong.js"></script>
   </body>
 </html>
