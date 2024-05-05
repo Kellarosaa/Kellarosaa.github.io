@@ -1,0 +1,52 @@
+/* styles.css */
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    text-align: center;
+}
+
+.case-rolling-container {
+    margin: 20px auto;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    overflow: hidden;
+}
+
+.case-rolling {
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(to bottom, #f0f0f0, #ccc);
+    animation: spin 3s linear infinite;
+}
+
+.case-rolling:hover {
+    animation-play-state: paused;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.result-container {
+    margin-top: 20px;
+}
+
+#result-text {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+#result-image {
+    width: 100px;
+    height: 100px;
+    margin: 20px auto;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+}
