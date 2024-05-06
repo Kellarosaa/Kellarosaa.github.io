@@ -1,31 +1,33 @@
-const spinButton = document.getElementById('spin-button');
-const caseRollingContainer = document.getElementById('case-rolling-container');
-const resultText = document.getElementById('result-text');
-const resultImage = document.getElementById('result-image');
-
-// items array, you can add or remove items as needed
 const items = [
-    { text: 'Item 1', image: 'item1.png' },
-    { text: 'Item 2', image: 'item2.png' },
-    { text: 'Item 3', image: 'item3.png' },
-    //...
+    { name: 'Item 1', chance: 0.3, image: 'item1.png' },
+    { name: 'Item 2', chance: 0.2, image: 'item2.png' },
+    { name: 'Item 3', chance: 0.5, image: 'item3.png' },
+    // Add more items here
 ];
 
-spinButton.addEventListener('click', () => {
-    // play animation
-    caseRollingContainer.classList.add('animate');
+const rollButton = document.getElementById('roll-button');
+const resultDiv = document.getElementById('result');
 
-    // wait for animation to finish
-    setTimeout(() => {
-        // generate a random item
-        const randomItem = items[Math.floor(Math.random() * items.length)];
+rollButton.addEventListener('click', rollItem);
 
-        // display the result
-        resultText.textContent = `You rolled: ${randomItem.text}`;
-        resultImage.src = `images/${randomItem.image}`;
-        resultImage.alt = randomItem.text;
+function rollItem() {
+    const randomNum = Math.random();
+    let rolledItem = null;
 
-        // remove animation class
-        caseRollingContainer.classList.remove('animate');
-    }, 3000); // adjust the timeout to match the animation duration
-});
+    for (let i = 0; i < items.length; i++) {
+        if (randomNum < items[i].chance) {
+            rolledItem = items[i];
+            break;
+        }
+    }
+
+    if (rolledItem) {
+        resultDiv.innerHTML = `You rolled a ${rolledItem.name}! (Chance: ${rolledItem.chance * 100}%)`;
+        // You can also display the image here
+        // const img = document.createElement('img');
+        // img.src = rolledItem.image;
+        // resultDiv.appendChild(img);
+    } else {
+        resultDiv.innerHTML = 'Error: No item rolled.';
+    }
+}
