@@ -1,25 +1,73 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Case Rolling Game</title>
-    <link rel="stylesheet" href="styles.css">
+  <title>Random Item Roller</title>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <button id="spin-button">Spin</button>
-        <div class="case-rolling-container">
-            <div class="case-rolling">
-                <!-- items will be displayed here -->
-            </div>
-        </div>
-        <div class="result-container">
-            <h2 id="result-text">You rolled:</h2>
-            <img id="result-image" src="" alt="Item Image">
-        </div>
-    </div>
+  <div class="container">
+    <button id="rollButton">Roll</button>
+    <div id="result"></div>
+  </div>
 
-    <script src="script.js"></script>
+  <script>
+    // Define the items and their chances
+    const items = [
+      { name: 'Item 1', chance: 0.3 },
+      { name: 'Item 2', chance: 0.2 },
+      { name: 'Item 3', chance: 0.1 },
+      { name: 'Item 4', chance: 0.4 }
+    ];
+
+    const rollButton = document.getElementById('rollButton');
+    const resultDiv = document.getElementById('result');
+
+    rollButton.addEventListener('click', () => {
+      // Generate a random number between 0 and 1
+      const randomNumber = Math.random();
+
+      // Find the item that was rolled
+      let rolledItem = null;
+      let cumulativeChance = 0;
+      for (const item of items) {
+        cumulativeChance += item.chance;
+        if (randomNumber <= cumulativeChance) {
+          rolledItem = item;
+          break;
+        }
+      }
+
+      // Display the result
+      if (rolledItem) {
+        resultDiv.textContent = `You rolled ${rolledItem.name} with a ${(rolledItem.chance * 100).toFixed(2)}% chance.`;
+      } else {
+        resultDiv.textContent = 'No item was rolled.';
+      }
+    });
+  </script>
 </body>
 </html>
