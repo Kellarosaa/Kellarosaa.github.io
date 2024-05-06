@@ -5,7 +5,6 @@ const items = [
     { name: 'Item 1', chance: 0.05, image: 'item1.png' },
     { name: 'Item 2', chance: 0.025, image: 'item2.png' },
     { name: 'Item 3', chance: 0.001, image: 'item3.png' },
-    // Add more items here
 ];
 
 const rollButton = document.getElementById('roll-button');
