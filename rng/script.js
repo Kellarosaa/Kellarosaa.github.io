@@ -1,4 +1,7 @@
 const items = [
+    { name: 'level 1 mob boss', chance: 05, image: 'item1.png' },
+    { name: 'rare', chance: 0.2, image: 'item2.png' },
+    { name: 'sigma', chance: 0.1, image: 'item3.png' },
     { name: 'Item 1', chance: 0.3, image: 'item1.png' },
     { name: 'Item 2', chance: 0.2, image: 'item2.png' },
     { name: 'Item 3', chance: 0.5, image: 'item3.png' },
