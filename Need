@@ -51,9 +51,6 @@
     buttonPosition: "bottom-left" //bottom-left, bottom-right, top-left, top-right
   }
 
-  </script>
-  <script async src="//api.adinplay.com/libs/aiptag/pub/TPK/virtualvacation.us/tag.min.js"></script>
-</head>
 
 <style>
 /*@import url(//fonts.googleapis.com/css?family=Lato:300:400);*/
