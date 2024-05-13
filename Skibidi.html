@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Random Website Redirect</title>
+</head>
+<body>
+  <script>
+    // Array of 10 website URLs
+    const websites = [
+      'https://www.example.com',
+      'https://www.google.com',
+      'https://www.yahoo.com',
+      'https://www.bing.com',
+      'https://www.duckduckgo.com',
+      'https://www.wikipedia.org',
+      'https://www.amazon.com',
+      'https://www.facebook.com',
+      'https://www.twitter.com',
+      'https://www.instagram.com'
+    ];
+
+    // Generate a random index to select a website
+    const randomIndex = Math.floor(Math.random() * websites.length);
+
+    // Redirect the user to the selected website
+    window.location.href = websites[randomIndex];
+  </script>
+</body>
+</html>
