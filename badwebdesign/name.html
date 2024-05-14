@@ -1,32 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Random Character Generator</title>
+  <title> Text Box</title>
 </head>
 <body>
-  <h1>Type a your name</h1>
-  <input type="text" id="input-field" onkeyup="generateRandomChar(this)">
-  <p>Your name is: <span id="output-field"></span></p>
+  <label for="name-input">Enter your name:</label>
+  <input type="text" id="name-input" onkeypress="randomizeCharacter(event)">
 
   <script>
-    function generateRandomChar(element) {
-      const charCode = element.value.charCodeAt(0);
-      let newCharCode;
-      if (charCode >= 65 && charCode <= 90) {
-        // Uppercase letters
-        newCharCode = Math.floor(Math.random() * 26) + 65;
-      } else if (charCode >= 97 && charCode <= 122) {
-        // Lowercase letters
-        newCharCode = Math.floor(Math.random() * 26) + 97;
-      } else if (charCode >= 48 && charCode <= 57) {
-        // Numbers
-        newCharCode = Math.floor(Math.random() * 10) + 48;
-      } else {
-        // Other characters
-        newCharCode = Math.floor(Math.random() * 94) + 33;
-      }
-      element.value = String.fromCharCode(newCharCode);
-      document.getElementById("output-field").textContent = element.value;
+    function randomizeCharacter(event) {
+      const randomChar = String.fromCharCode(Math.floor(Math.random() * 26) + 65);
+      event.target.value += randomChar;
+      event.preventDefault();
     }
   </script>
 </body>
