@@ -1,36 +1,37 @@
+```html
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Persistent Button Counter</title>
+  <title>Counter</title>
 </head>
 <body>
-  <h1>Click the button to increment the count!</h1>
-  <button id="counterButton">0</button>
+  <h1>Counter</h1>
+  <p>Current count: <span id="count">0</span></p>
+  <button onclick="incrementCount()">Click me</button>
 
   <script>
-    // Check if the count is stored in localStorage
-    let count = localStorage.getItem('buttonCount') || 0;
+    let count = 0;
 
-    // Update the button text with the current count
-    document.getElementById('counterButton').textContent = count;
-
-    // Add a click event listener to the button
-    document.getElementById('counterButton').addEventListener('click', () => {
-      // Increment the count
+    function incrementCount() {
       count++;
+      document.getElementById("count").textContent = count;
+      saveCount();
+    }
 
-      // Update the button text with the new count
-      document.getElementById('counterButton').textContent = count;
+    function saveCount() {
+      localStorage.setItem("count", count);
+    }
 
-      // Store the updated count in localStorage
-      localStorage.setItem('buttonCount', count);
-    });
+    function loadCount() {
+      const savedCount = localStorage.getItem("count");
+      if (savedCount !== null) {
+        count = parseInt(savedCount);
+        document.getElementById("count").textContent = count;
+      }
+    }
 
-    // Add an event listener to the 'beforeunload' event to save the count on page exit
-    window.addEventListener('beforeunload', () => {
-      // Store the current count in localStorage
-      localStorage.setItem('buttonCount', count);
-    });
+    loadCount();
   </script>
 </body>
 </html>
+```
