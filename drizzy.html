@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Guess What</title>
+</head>
+<body>
+  <h1 id="guessWhat">Guess What</h1>
+  <script>
+    const guessWhat = document.getElementById('guessWhat');
+    let clickCount = 0;
+
+    guessWhat.addEventListener('click', () => {
+      clickCount++;
+      if (clickCount === 5) {
+        guessWhat.textContent = 'Chicken Butt!';
+        const audio = new Audio('chicken-butt.mp3');
+        audio.play();
+      }
+    });
+  </script>
+</body>
+</html>
