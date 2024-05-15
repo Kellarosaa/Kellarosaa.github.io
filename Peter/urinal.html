@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Urinal Game</title>
+  <style>
+    .urinal {
+      width: 50px;
+      height: 100px;
+      background-color: #ccc;
+      margin: 10px;
+      display: inline-block;
+    }
+    .occupied {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div id="urinals">
+    <div class="urinal"></div>
+    <div class="urinal"></div>
+    <div class="urinal"></div>
+    <div class="urinal"></div>
+    <div class="urinal"></div>
+    <div class="urinal"></div>
+  </div>
+  <button id="leave">Leave Bathroom</button>
+
+  <script>
+    // Get all the urinal elements
+    const urinalElements = document.querySelectorAll('.urinal');
+
+    // Function to randomly occupy some urinals
+    function occupyUrinals() {
+      const numOccupied = Math.floor(Math.random() * 5) + 1;
+      for (let i = 0; i < numOccupied; i++) {
+        const randomIndex = Math.floor(Math.random() * urinalElements.length);
+        urinalElements[randomIndex].classList.add('occupied');
+      }
+    }
+
+    // Function to handle urinal click
+    function handleUrinalClick(event) {
+      if (!event.target.classList.contains('occupied')) {
+        event.target.classList.add('occupied');
+        resetGame();
+      }
+    }
+
+    // Function to reset the game
+    function resetGame() {
+      urinalElements.forEach(urinal => urinal.classList.remove('occupied'));
+      occupyUrinals();
+    }
+
+    // Event listener for urinal clicks
+    urinalElements.forEach(urinal => urinal.addEventListener('click', handleUrinalClick));
+
+    // Event listener for "Leave Bathroom" button
+    document.getElementById('leave').addEventListener('click', () => {
+      document.body.innerHTML = '';
+    });
+
+    // Initialize the game
+    occupyUrinals();
+  </script>
+</body>
+</html>
