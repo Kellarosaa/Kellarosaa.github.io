@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rock Paper Scissors</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f2f2f2;
+    }
+    
+    h1 {
+      margin-top: 50px;
+    }
+    
+    #game-container {
+      margin-top: 50px;
+    }
+    
+    #user-choice, #computer-choice, #result {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+    
+    #streak, #high-score {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Rock Paper Scissors</h1>
+  
+  <div id="game-container">
+    <button id="rock">Rock</button>
+    <button id="paper">Paper</button>
+    <button id="scissors">Scissors</button>
+  </div>
+  
+  <div id="user-choice"></div>
+  <div id="computer-choice"></div>
+  <div id="result"></div>
+  
+  <div id="streak"></div>
+  <div id="high-score"></div>
+  
+  <script>
+    const choices = ['rock', 'paper', 'scissors'];
+    let userStreak = 0;
+    let highScore = 0;
+
+    function getComputerChoice() {
+      return choices[Math.floor(Math.random() * 3)];
+    }
+
+    function determineWinner(userChoice, computerChoice) {
+      if (userChoice === computerChoice) {
+        return 'Tie';
+      } else if (
+        (userChoice === 'rock' && computerChoice === 'scissors') ||
+        (userChoice === 'paper' && computerChoice === 'rock') ||
+        (userChoice === 'scissors' && computerChoice === 'paper')
+      ) {
+        userStreak++;
+        if (userStreak > highScore) {
+          highScore = userStreak;
+          localStorage.setItem('highScore', highScore);
+        }
+        return 'You win!';
+      } else {
+        userStreak = 0;
+        return 'You lose.';
+      }
+    }
+
+    document.querySelectorAll('#game-container button').forEach(button => {
+      button.addEventListener('click', () => {
+        const userChoice = button.id;
+        const computerChoice = getComputerChoice();
+        const result = determineWinner(userChoice, computerChoice);
+
+        document.getElementById('user-choice').textContent = `You chose: ${userChoice}`;
+        document.getElementById('computer-choice').textContent = `Computer chose: ${computerChoice}`;
+        document.getElementById('result').textContent = result;
+        document.getElementById('streak').textContent = `Current streak: ${userStreak}`;
+
+        const storedHighScore = localStorage.getItem('highScore');
+        if (storedHighScore) {
+          highScore = parseInt(storedHighScore);
+        }
+        document.getElementById('high-score').textContent = `High score: ${highScore}`;
+      });
+    });
+  </script>
+</body>
+</html>
