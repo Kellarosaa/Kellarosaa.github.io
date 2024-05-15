@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Platformer Game</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
+
+  <script>
+    // Initialize the game
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    let player, platforms, currentLevel, levels;
+
+    // Game loop
+    function gameLoop() {
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Update and draw the game objects
+      player.update();
+      player.draw();
+      platforms.forEach(platform => platform.draw());
+
+      // Check for level completion
+      if (player.reachedExit()) {
+        loadNextLevel();
+      }
+
+      // Request the next frame
+      requestAnimationFrame(gameLoop);
+    }
+
+    // Load the game levels
+    function loadLevels() {
+      levels = [
+        {
+          platforms: [
+            { x: 50, y: 500, width: 200, height: 50 },
+            { x: 300, y: 400, width: 150, height: 50 },
+            { x: 550, y: 300, width: 200, height: 50 },
+            { x: 800, y: 200, width: 150, height: 50 },
+            { x: 1050, y: 100, width: 200, height: 50 }
+          ],
+          playerStart: { x: 50, y: 450 },
+          exitPosition: { x: 1200, y: 50 }
+        },
+        {
+          platforms: [
+            { x: 50, y: 500, width: 150, height: 50 },
+            { x: 250, y: 400, width: 200, height: 50 },
+            { x: 500, y: 300, width: 150, height: 50 },
+            { x: 700, y: 200, width: 200, height: 50 },
+            { x: 950, y: 100, width: 150, height: 50 }
+          ],
+          playerStart: { x: 50, y: 450 },
+          exitPosition: { x: 1150, y: 50 }
+        }
+      ];
+
+      // Start the first level
+      loadLevel(0);
+    }
+
+    // Load a specific level
+    function loadLevel(index) {
+      currentLevel = levels[index];
+
+      // Create the player
+      player = new Player(currentLevel.playerStart.x, currentLevel.playerStart.y);
+
+      // Create the platforms
+      platforms = currentLevel.platforms.map(
+        platform => new Platform(platform.x, platform.y, platform.width, platform.height)
+      );
+
+      // Start the game loop
+      gameLoop();
+    }
+
+    // Player class
+    class Player {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.width = 50;
+        this.height = 100;
+        this.velocity = { x: 0, y: 0 };
+        this.gravity = 1;
+        this.jumpForce = 20;
+      }
+
+      update() {
+        // Apply gravity
+        this.velocity.y += this.gravity;
+
+        // Move the player
+        this.x += this.velocity.x;
+        this.y += this.velocity.y;
+
+        // Check for collisions with platforms
+        platforms.forEach(platform => {
+          if (
+            this.x < platform.x + platform.width &&
+            this.x + this.width > platform.x &&
+            this.y < platform.y + platform.height &&
+            this.y + this.height > platform.y
+          ) {
+            // Collision detected, stop vertical movement
+            this.velocity.y = 0;
+            this.y = platform.y - this.height;
+          }
+        });
+
+        // Check for level completion
+        if (
+          this.x > currentLevel.exitPosition.x &&
+          this.y < currentLevel.exitPosition.y + 50 &&
+          this.y > currentLevel.exitPosition.y - 50
+        ) {
+          this.reachedExit = true;
+        }
+      }
+
+      draw() {
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+
+      reachedExit() {
+        return this.reachedExit;
+      }
+
+      jump() {
+        this.velocity.y = -this.jumpForce;
+      }
+    }
+
+    // Platform class
+    class Platform {
+      constructor(x, y, width, height) {
+        this.x = x;
+        this.y = y;
+        this.width = width;
+        this.height = height;
+      }
+
+      draw() {
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+      }
+    }
+
+    // Initialize the game
+    canvas.width = 1280;
+    canvas.height = 720;
+    loadLevels();
+  </script>
+</body>
+</html>
