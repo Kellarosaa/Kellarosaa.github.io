@@ -1,44 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Favorite Song</title>
+  <title>Survey Results</title>
 </head>
 <body>
-  <h1>What's Your Favorite Song?</h1>
-  <form id="song-form">
-    <label for="song-input">Enter your favorite song:</label>
-    <input type="text" id="song-input" name="song-input" required>
-    <button type="submit">Submit</button>
-  </form>
-  <div id="song-list"></div>
+  <h1>Survey Results</h1>
+  <p>Based on the responses from other users, the most common answer is:</p>
+  <p id="result"></p>
 
   <script>
-    // Load saved song data from localStorage
-    let songData = JSON.parse(localStorage.getItem('songData')) || [];
+    // Define an array to store the survey responses
+    const responses = [];
 
-    // Display existing song data
-    const songList = document.getElementById('song-list');
-    songData.forEach(song => {
-      const songElement = document.createElement('div');
-      songElement.textContent = `${song}`;
-      songList.appendChild(songElement);
-    });
+    // Function to handle form submission
+    function submitSurvey() {
+      // Get the user's response from the form
+      const userResponse = document.getElementById("response").value;
 
-    // Handle form submission
-    const form = document.getElementById('song-form');
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const songInput = document.getElementById('song-input');
-      const newSong = songInput.value.trim();
-      if (newSong) {
-        songData.push(newSong);
-        localStorage.setItem('songData', JSON.stringify(songData));
-        const newSongElement = document.createElement('div');
-        newSongElement.textContent = newSong;
-        songList.appendChild(newSongElement);
-        songInput.value = '';
+      // Add the user's response to the array
+      responses.push(userResponse);
+
+      // Calculate the most common response
+      const mostCommonResponse = getMostCommonResponse(responses);
+
+      // Display the most common response
+      document.getElementById("result").textContent = mostCommonResponse;
+    }
+
+    // Function to get the most common response from the array
+    function getMostCommonResponse(arr) {
+      const counts = {};
+      let maxCount = 0;
+      let mostCommonResponse = "";
+
+      for (const response of arr) {
+        if (counts[response]) {
+          counts[response]++;
+        } else {
+          counts[response] = 1;
+        }
+
+        if (counts[response] > maxCount) {
+          maxCount = counts[response];
+          mostCommonResponse = response;
+        }
       }
-    });
+
+      return mostCommonResponse;
+    }
   </script>
+
+  <form onsubmit="submitSurvey(); return false;">
+    <label for="response">What do you think?</label>
+    <input type="text" id="response" name="response" required>
+    <button type="submit">Submit</button>
+  </form>
 </body>
 </html>
