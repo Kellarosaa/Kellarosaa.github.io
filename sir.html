@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Favorite Song</title>
+</head>
+<body>
+  <h1>What's Your Favorite Song?</h1>
+  <form id="song-form">
+    <label for="song-input">Enter your favorite song:</label>
+    <input type="text" id="song-input" name="song-input" required>
+    <button type="submit">Submit</button>
+  </form>
+  <div id="song-list"></div>
+
+  <script>
+    // Load saved song data from localStorage
+    let songData = JSON.parse(localStorage.getItem('songData')) || [];
+
+    // Display existing song data
+    const songList = document.getElementById('song-list');
+    songData.forEach(song => {
+      const songElement = document.createElement('div');
+      songElement.textContent = `${song}`;
+      songList.appendChild(songElement);
+    });
+
+    // Handle form submission
+    const form = document.getElementById('song-form');
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const songInput = document.getElementById('song-input');
+      const newSong = songInput.value.trim();
+      if (newSong) {
+        songData.push(newSong);
+        localStorage.setItem('songData', JSON.stringify(songData));
+        const newSongElement = document.createElement('div');
+        newSongElement.textContent = newSong;
+        songList.appendChild(newSongElement);
+        songInput.value = '';
+      }
+    });
+  </script>
+</body>
+</html>
