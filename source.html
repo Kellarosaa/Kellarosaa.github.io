@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>View Source</title>
+</head>
+<body>
+  <h1>View Source</h1>
+  <label for="url-input">Enter a URL:</label>
+  <input type="text" id="url-input" placeholder="example.com">
+  <button onclick="viewSource()">View Source</button>
+
+  <script>
+    function viewSource() {
+      var urlInput = document.getElementById("url-input");
+      var url = urlInput.value;
+      var viewSourceUrl = "view-source:" + url;
+      window.location.href = viewSourceUrl;
+    }
+  </script>
+</body>
+</html>
