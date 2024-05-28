@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Slide Presentation</title>
+  <style>
+    .slide {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+    .slide.active {
+      display: block;
+    }
+    .slide h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+    .slide img {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+    }
+    .controls {
+      text-align: center;
+      margin-top: 20px;
+    }
+    .controls button {
+      font-size: 18px;
+      padding: 10px 20px;
+      margin: 0 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide active">
+    <h1>Slide 1</h1>
+    <img src="slide1.jpg" alt="Slide 1 Image">
+  </div>
+  <div class="slide">
+    <h1>Slide 2</h1>
+    <img src="slide2.jpg" alt="Slide 2 Image">
+  </div>
+  <!-- Add 24 more slides here -->
+  <div class="controls">
+    <button id="prev">Previous</button>
+    <button id="next">Next</button>
+  </div>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+
+    function showSlide(n) {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (n + slides.length) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }
+
+    document.getElementById('prev').addEventListener('click', () => showSlide(currentSlide - 1));
+    document.getElementById('next').addEventListener('click', () => showSlide(currentSlide + 1));
+  </script>
+</body>
+</html>
